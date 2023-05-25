@@ -1,0 +1,69 @@
+[gd_scene load_steps=10 format=3 uid="uid://tu8oyvgjgemj"]
+
+[ext_resource type="PackedScene" uid="uid://bfu3n3gousl0c" path="res://Scenes/field.tscn" id="1_1f8ks"]
+[ext_resource type="Script" path="res://Scenes/Game.gd" id="1_7nkuu"]
+[ext_resource type="PackedScene" uid="uid://vyyq18dmlacq" path="res://Entities/Ball/ball.tscn" id="2_gm0ht"]
+[ext_resource type="PackedScene" uid="uid://itnbdlwu6mrw" path="res://Entities/Racket/racket.tscn" id="3_r614k"]
+[ext_resource type="Script" path="res://Entities/Racket/PlayerInputComponent.gd" id="4_deo5o"]
+[ext_resource type="Script" path="res://Entities/Racket/AIInputComponent.gd" id="6_fouqm"]
+[ext_resource type="PackedScene" uid="uid://xemd6fv5gt48" path="res://UI/hud.tscn" id="7_txkjv"]
+[ext_resource type="PackedScene" uid="uid://bpkhkmf4bcx61" path="res://UI/final_screen.tscn" id="8_82vf0"]
+[ext_resource type="Script" path="res://Scenes/Camera2D.gd" id="9_00f1f"]
+
+[node name="Game" type="Node"]
+script = ExtResource("1_7nkuu")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.239216, 0.239216, 0.239216, 1)
+
+[node name="Field" parent="." instance=ExtResource("1_1f8ks")]
+
+[node name="Ball" parent="." instance=ExtResource("2_gm0ht")]
+position = Vector2(512, 256)
+initial_speed = 300
+speed_commulator = 100
+
+[node name="Player" parent="." instance=ExtResource("3_r614k")]
+position = Vector2(100, 256)
+
+[node name="Node" type="Node" parent="Player"]
+script = ExtResource("4_deo5o")
+
+[node name="Racket" parent="." instance=ExtResource("3_r614k")]
+position = Vector2(924, 256)
+move_speed = 300
+
+[node name="Node" type="Node" parent="Racket"]
+script = ExtResource("6_fouqm")
+ball_path = NodePath("../../Ball")
+
+[node name="StartTime" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("7_txkjv")]
+
+[node name="FinalScreen" parent="CanvasLayer" instance=ExtResource("8_82vf0")]
+visible = false
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(512, 256)
+script = ExtResource("9_00f1f")
+
+[node name="Timer" type="Timer" parent="Camera2D"]
+wait_time = 0.1
+one_shot = true
+
+[connection signal="goal_left" from="Field" to="." method="_on_field_goal_left"]
+[connection signal="goal_right" from="Field" to="." method="_on_field_goal_right"]
+[connection signal="timeout" from="StartTime" to="." method="_on_start_time_timeout"]
+[connection signal="exit" from="CanvasLayer/FinalScreen" to="." method="_on_final_screen_exit"]
+[connection signal="new_round" from="CanvasLayer/FinalScreen" to="." method="_on_final_screen_new_round"]
+[connection signal="timeout" from="Camera2D/Timer" to="Camera2D" method="_on_timer_timeout"]

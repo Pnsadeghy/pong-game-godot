@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3 uid="uid://bfu3n3gousl0c"]
+
+[ext_resource type="Script" path="res://Scenes/field.gd" id="1_yhhgk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_22a3n"]
+size = Vector2(1024, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yqguh"]
+size = Vector2(10, 512)
+
+[node name="Field" type="Node2D"]
+script = ExtResource("1_yhhgk")
+
+[node name="TopWall" type="StaticBody2D" parent="."]
+position = Vector2(512, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall"]
+shape = SubResource("RectangleShape2D_22a3n")
+
+[node name="BottomWall" type="StaticBody2D" parent="."]
+position = Vector2(512, 502)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomWall"]
+shape = SubResource("RectangleShape2D_22a3n")
+
+[node name="GoalLeft" type="Area2D" parent="."]
+position = Vector2(-5, 256)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalLeft"]
+shape = SubResource("RectangleShape2D_yqguh")
+
+[node name="GoalRight" type="Area2D" parent="."]
+position = Vector2(1024, 256)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalRight"]
+shape = SubResource("RectangleShape2D_yqguh")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = 507.0
+offset_top = 56.0
+offset_right = 517.0
+offset_bottom = 456.0
+color = Color(1, 1, 1, 0.317647)
+
+[connection signal="body_entered" from="GoalLeft" to="." method="_on_goal_left_body_entered"]
+[connection signal="body_entered" from="GoalRight" to="." method="_on_goal_right_body_entered"]

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://clx2oouqipgen"]
+
+[ext_resource type="PackedScene" uid="uid://itnbdlwu6mrw" path="res://Entities/Racket/racket.tscn" id="1_dwi7b"]
+[ext_resource type="Script" path="res://Entities/Racket/PlayerInputComponent.gd" id="2_scvyb"]
+
+[node name="Racket" instance=ExtResource("1_dwi7b")]
+
+[node name="Node" type="Node" parent="." index="2"]
+script = ExtResource("2_scvyb")

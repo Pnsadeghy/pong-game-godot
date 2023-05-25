@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://vyyq18dmlacq"]
+
+[ext_resource type="Texture2D" uid="uid://bkrylfxg3lnkd" path="res://Entities/Ball/Ball.png" id="1_ftmod"]
+[ext_resource type="Script" path="res://Entities/Ball/ball.gd" id="1_pcvew"]
+[ext_resource type="AudioStream" uid="uid://djwm6dq8inqd8" path="res://PongRacket.wav" id="3_cmi4u"]
+[ext_resource type="AudioStream" uid="uid://c1wodtgt7nlg4" path="res://PongWall.wav" id="4_x6m42"]
+
+[sub_resource type="Gradient" id="Gradient_s17ys"]
+offsets = PackedFloat32Array(0, 0.981595)
+colors = PackedColorArray(0.8, 0, 0, 0, 0.8, 0, 0, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_acxqq"]
+radius = 16.0
+
+[node name="Ball" type="CharacterBody2D"]
+collision_layer = 3
+script = ExtResource("1_pcvew")
+
+[node name="Trail" type="Node" parent="."]
+
+[node name="Line2D" type="Line2D" parent="Trail"]
+width = 32.0
+gradient = SubResource("Gradient_s17ys")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_acxqq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+texture = ExtResource("1_ftmod")
+
+[node name="RacketAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_cmi4u")
+
+[node name="WallAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_x6m42")
